@@ -72,36 +72,44 @@ namespace Spell_Editor
 
         public async Task<DataTable> ExecuteQueryWithCancellation(CancellationToken token, string query, params Parameter[] parameters)
         {
-            return await Task.Run(async () =>
+            try
             {
-                using (Connection conn = (Connection)Activator.CreateInstance(typeof(Connection), connectionString.ToString()))
+                return await Task.Run(async () =>
                 {
-                    conn.Open();
-
-                    using (Command cmd = (Command)Activator.CreateInstance(typeof(Command), query, conn))
+                    using (Connection conn = (Connection)Activator.CreateInstance(typeof(Connection), connectionString.ToString()))
                     {
-                        foreach (var param in parameters)
-                            cmd.Parameters.Add(param);
+                        conn.Open();
 
-                        try
+                        using (Command cmd = (Command)Activator.CreateInstance(typeof(Command), query, conn))
                         {
-                            var reader = await cmd.ExecuteReaderAsync(token);
+                            foreach (var param in parameters)
+                                cmd.Parameters.Add(param);
 
-                            if (token.IsCancellationRequested)
-                                token.ThrowIfCancellationRequested();
+                            try
+                            {
+                                var reader = await cmd.ExecuteReaderAsync(token);
 
-                            var dt = new DataTable();
-                            dt.Load(reader);
-                            conn.Close();
-                            return dt;
-                        }
-                        catch (Exception)
-                        {
-                            return new DataTable();
+                                if (token.IsCancellationRequested)
+                                    token.ThrowIfCancellationRequested();
+
+                                var dt = new DataTable();
+                                dt.Load(reader);
+                                conn.Close();
+                                return dt;
+                            }
+                            catch (Exception)
+                            {
+                                return new DataTable();
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+                return new DataTable();
+            }
         }
 
         public async Task<object> ExecuteScalar(string query, params Parameter[] parameters)

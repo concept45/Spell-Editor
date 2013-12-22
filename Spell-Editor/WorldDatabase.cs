@@ -45,7 +45,7 @@ namespace Spell_Editor
             DataTable dt = await ExecuteQuery("SELECT name FROM creature_template WHERE entry = '" + id + "'");
 
             if (dt.Rows.Count == 0)
-                return "_replaceBecauseOfError_ GetCreatureNameById not found";
+                return " GetCreatureNameById not found";
 
             string name = dt.Rows[0]["name"].ToString();
             return name.Replace('"', '\'');
@@ -56,7 +56,7 @@ namespace Spell_Editor
             DataTable dt = await ExecuteQuery("SELECT name FROM creature_template WHERE entry = '" + await GetCreatureIdByGuid(guid) + "'");
 
             if (dt.Rows.Count == 0)
-                return "_replaceBecauseOfError_ GetCreatureNameByGuid not found";
+                return " GetCreatureNameByGuid not found";
 
             string name = dt.Rows[0]["name"].ToString();
             return name.Replace('"', '\'');
@@ -67,7 +67,7 @@ namespace Spell_Editor
             DataTable dt = await ExecuteQuery("SELECT name FROM gameobject_template WHERE entry = '" + id + "'");
 
             if (dt.Rows.Count == 0)
-                return "_replaceBecauseOfError_ GetGameobjectNameById not found";
+                return " GetGameobjectNameById not found";
 
             string name = dt.Rows[0]["name"].ToString();
             return name.Replace('"', '\'');
@@ -78,7 +78,7 @@ namespace Spell_Editor
             DataTable dt = await ExecuteQuery("SELECT name FROM gameobject_template WHERE entry = '" + await GetGameobjectIdByGuid(guid) + "'");
 
             if (dt.Rows.Count == 0)
-                return "_replaceBecauseOfError_ GetGameobjectNameByGuid not found";
+                return " GetGameobjectNameByGuid not found";
 
             string name = dt.Rows[0]["name"].ToString();
             return name.Replace('"', '\'');
@@ -89,7 +89,7 @@ namespace Spell_Editor
             DataTable dt = await ExecuteQuery("SELECT title FROM quest_template WHERE id = " + id);
 
             if (dt.Rows.Count == 0)
-                return "_replaceBecauseOfError_<Quest '" + id + "' not found!>";
+                return "<Quest '" + id + "' not found!>";
 
             return dt.Rows[0]["title"].ToString();
         }
@@ -99,7 +99,7 @@ namespace Spell_Editor
             DataTable dt = await ExecuteQuery(String.Format("SELECT title FROM quest_template WHERE (RequiredNpcOrGo1 = {0} OR RequiredNpcOrGo2 = {1} OR RequiredNpcOrGo3 = {2} OR RequiredNpcOrGo4 = {3}) AND RequiredSpellCast1 = {4}", requiredNpcOrGo1, requiredNpcOrGo2, requiredNpcOrGo3, requiredNpcOrGo4, requiredSpellCast1));
 
             if (dt.Rows.Count == 0)
-                return "_replaceBecauseOfError_<Quest not found (GetQuestNameForCastedByCreatureOrGo)!>";
+                return "<Quest not found (GetQuestNameForCastedByCreatureOrGo)!>";
 
             return dt.Rows[0]["title"].ToString();
         }
@@ -109,7 +109,7 @@ namespace Spell_Editor
             DataTable dt = await ExecuteQuery(String.Format("SELECT title FROM quest_template WHERE (RequiredNpcOrGo1 = {0} OR RequiredNpcOrGo2 = {1} OR RequiredNpcOrGo3 = {2} OR RequiredNpcOrGo4 = {3})", requiredNpcOrGo1, requiredNpcOrGo2, requiredNpcOrGo3, requiredNpcOrGo4));
 
             if (dt.Rows.Count == 0)
-                return "_replaceBecauseOfError_<Quest not found (GetQuestNameForKilledMonster)!>";
+                return "<Quest not found (GetQuestNameForKilledMonster)!>";
 
             return dt.Rows[0]["title"].ToString();
         }
@@ -119,9 +119,19 @@ namespace Spell_Editor
             DataTable dt = await ExecuteQuery("SELECT name FROM item_template WHERE entry = " + id);
 
             if (dt.Rows.Count == 0)
-                return "_replaceBecauseOfError_<Item '" + id + "' not found!>";
+                return "<Item '" + id + "' not found!>";
 
             return dt.Rows[0]["name"].ToString();
+        }
+
+        public async Task<string> GetSpellCommentById(int id)
+        {
+            DataTable dt = await ExecuteQuery("SELECT comment FROM spell_dbc WHERE id = " + id);
+
+            if (dt.Rows.Count == 0)
+                return "<Spell '" + id + "' not found!>";
+
+            return dt.Rows[0]["comment"].ToString();
         }
     }
 }
