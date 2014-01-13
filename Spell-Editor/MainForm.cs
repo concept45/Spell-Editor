@@ -37,5 +37,10 @@ namespace Spell_Editor
             string spellname = await worldDatabase.GetSpellCommentById(Convert.ToInt32(textBox1.Text));
             MessageBox.Show(spellname);
         }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
