@@ -42,5 +42,10 @@ namespace Spell_Editor
         {
 
         }
+
+        private void textBox73_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
