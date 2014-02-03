@@ -23,18 +23,28 @@ namespace Spell_Editor
         private void MainForm_Load(object sender, EventArgs e)
         {
             worldDatabase = new WorldDatabase("localhost", 3306, "root", "123", "clean_world_malcrom");
-            sqliteDatabase = new SQLiteDatabase("Resources/sqlite_database.db");
+            sqliteDatabase = new SQLiteDatabase("sqlite_database.db");
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            string spellname = await sqliteDatabase.GetSpellNameById(Convert.ToInt32(textBox1.Text));
+            int spellId;
+
+            if (String.IsNullOrWhiteSpace(textBox1.Text) || !Int32.TryParse(textBox1.Text, out spellId))
+                return;
+
+            string spellname = await sqliteDatabase.GetSpellNameById(spellId);
             MessageBox.Show(spellname);
         }
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            string spellname = await worldDatabase.GetSpellCommentById(Convert.ToInt32(textBox1.Text));
+            int spellId;
+
+            if (String.IsNullOrWhiteSpace(textBox1.Text) || !Int32.TryParse(textBox1.Text, out spellId))
+                return;
+
+            string spellname = await worldDatabase.GetSpellCommentById(spellId);
             MessageBox.Show(spellname);
         }
 
@@ -46,6 +56,21 @@ namespace Spell_Editor
         private void textBox73_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void exiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
